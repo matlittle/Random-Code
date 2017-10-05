@@ -1,5 +1,6 @@
-function matrixProd( mx1, mx2 ) {
 
+// Matrix multiplication to review!
+function matrixProd( mx1, mx2 ) {
 	//get basic structures of given matrices.  
 	var mx1Rows = mx1.length;
 	var mx1Cols = mx1[0].length;
@@ -36,7 +37,6 @@ function matrixProd( mx1, mx2 ) {
 
 
 function checkMatrices(mx1, mx2, mx1Rows, mx1Cols, mx2Rows) {
-
 /* checks the structure of the two given matrices. 
 ensures there's an equal number of rows in matrix 1 to columns in matrix 2.
 also ensures each matrix is rectangular in structure. */
@@ -60,9 +60,7 @@ also ensures each matrix is rectangular in structure. */
 }
 
 
-
 function createMatrix(rows, cols, autoFill = false, lowRange = 0, highRange = 100) {
-
 /* creates matrix with given number of rows and columns. 
 if autoFill is true, the matrix will be automatically filled with
 random numbers, based on the low/high range given. 0 - 100 by default */
@@ -85,7 +83,7 @@ random numbers, based on the low/high range given. 0 - 100 by default */
 }
 
 
-//Testing matrices
+//Test cases
 
 var a = [[1,2],[3,4],[5,6],[7,8]];
 var b = createMatrix(2,8,true,0,10);
