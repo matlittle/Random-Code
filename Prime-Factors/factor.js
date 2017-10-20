@@ -1,11 +1,9 @@
+var time0, time1;
 
 $("#prime-factor").click( function() {
-
-	loadingGif();
-
+	$("#content").empty();
+	
 	var inputNum = parseInt($("#input-num").val());
-
-	var time0, time1;
 
 	if(validateInput(inputNum)){
 
@@ -25,6 +23,7 @@ $("#prime-factor").click( function() {
 function findPrimeFactors(number) {
 
 	time0 = performance.now();
+	console.log()
 	var possPrimes = getPossiblePrimes(number);
 	var foundFactors = findFactors(possPrimes);
 	time1 = performance.now();
@@ -42,7 +41,7 @@ function findPrimeFactors(number) {
 		// start prime array with first prime number, 2
 		var primes = [2];
 
-		// check if number is 
+		// check if number is prime
 		for(var i = 3; i <= num; i += 2) {
 			var isPrime = true;
 
@@ -76,7 +75,6 @@ function findPrimeFactors(number) {
 
 		return factors;
 	}
-
 }
 
 
@@ -88,12 +86,6 @@ function validateInput(num) {
 	}
 }
 
-function loadingGif() {
-	var gifUrl = "https://cdn-us-east.velaro.com/Content/Images/loading.gif"
-	var gif = $("<img>").attr("src", gifUrl);
-
-	$("#content").append(gif);
-}
 
 function buildDisplay(set, time) {
 	$("#content").empty();
