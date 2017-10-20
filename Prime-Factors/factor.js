@@ -1,29 +1,44 @@
-var time0, time1;
+var time0, time1, iter = 0;
 
 $("#prime-factor").click( function() {
 	$("#content").empty();
-	
+
 	var inputNum = parseInt($("#input-num").val());
 
 	if(validateInput(inputNum)){
 
 		setTimeout(function() {
-			var factors = findPrimeFactors(inputNum);
-			console.log(time0, time1);
-			buildDisplay(factors, Math.ceil(time1 - time0));
-		}, 1000);
+			var factors = findPrimeFactors1(inputNum);
+			buildDisplay1(factors, Math.ceil(time1 - time0));
+		}, 100);
 
 	}else {
 		$("#content").text("Enter a valid number, which is greater than zero")
 	}
-
 });
 
 
-function findPrimeFactors(number) {
+$("#prime-factor-2").click( function() {
+	$("#content").empty();
+
+	var inputNum = parseInt($("#input-num-2").val());
+
+	if(validateInput(inputNum)){
+
+		setTimeout(function() {
+			var factors = findPrimeFactors1(inputNum);
+			buildDisplay1(factors, Math.ceil(time1 - time0));
+		}, 100);
+
+	}else {
+		$("#content-2").text("Enter a valid number, which is greater than zero")
+	}
+});
+
+
+function findPrimeFactors1(number) {
 
 	time0 = performance.now();
-	console.log()
 	var possPrimes = getPossiblePrimes(number);
 	var foundFactors = findFactors(possPrimes);
 	time1 = performance.now();
@@ -46,6 +61,8 @@ function findPrimeFactors(number) {
 			var isPrime = true;
 
 			for(var k = 0; k < primes.length; k += 1){
+				iter += 1;
+
 				if(primes[k] > i/2) { 
 					break; 
 				}
@@ -68,6 +85,7 @@ function findPrimeFactors(number) {
 		var factors = new Set();
 
 		arr.forEach(function(prime) {
+			iter += 1;
 			if(number % prime === 0) {
 				factors.add(prime);
 			}
@@ -77,6 +95,53 @@ function findPrimeFactors(number) {
 	}
 }
 
+function findPrimeFactors2(number) {
+
+	if(number === 1) {
+		return null;
+	}
+
+	// start with input number, empty set, and beginning prime number, 2.
+	var factors = new Set();
+	
+	// use 2 as start of prime arr.
+	var primes = [2]; 
+
+
+	testPrime();
+
+	function testPrime() {
+		// get last number of prime array
+		var currPrime = primes[primes.length - 1];
+		// divide number to check by prime,
+		// if it's a factor
+		if(number % currPrime === 0)
+			// store quotient
+			var newNum = number/currPrime;
+			// check if the quotient can be divided by prime as well
+			while(newNum % currPrime === 0 && newNum > currPrime) {
+				// store new quotient if it can be, repeat
+				newNum /= currPrime;
+			}
+			
+			// add prime to the set when no longer divisible
+			factors.add(currPrime);
+			// if number to check is equal to prime we're checking against
+			if(newNum === currPrime){
+				// we've reached end of factoring
+				return factors;
+			}
+	}
+
+	// if not divisible by prime, 
+	findNextPrime();
+		// looping from the last number in the prime arr + 1
+		// find next prime (number not divisible by any other prime)
+		// restart division check 
+
+	function
+
+}
 
 function validateInput(num) {
 	if(typeof num === 'number' && num > 0){
@@ -87,7 +152,7 @@ function validateInput(num) {
 }
 
 
-function buildDisplay(set, time) {
+function buildDisplay1(set, time) {
 	$("#content").empty();
 
 	var displaySet = "{";
@@ -104,7 +169,8 @@ function buildDisplay(set, time) {
 		var displayTime = `${time} milliseconds`;
 	}
 
-	$("#content").append(displaySet).append("<br>")
-	$("#content").append(`Time to complete: ${displayTime}`);
+	$("#content").append(displaySet).append("<br>");
+	$("#content").append(`Time to complete: ${displayTime}`).append("<br>");
+	$("#content").append(`Iterations: ${iter}`);
 }
 

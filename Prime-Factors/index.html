@@ -2,18 +2,37 @@
 <html>
 <head>
 	<title>Prime Factorization</title>
-	<style type="text/css">
-		img {height: 100px; width: 100px;}
-	</style>
+	<!-- Latest compiled and minified Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
-	<input id="input-num" type="text" name="myNum">
-	<button id="prime-factor">Find Factors</button>
+	<div class="container" id="wrapper">
+		<div class="row">
+			<div class="col-xs-6" id="factor-1">
+				<h3>Method 1</h3>
+				<p>(slower)</p>
+				<input id="input-num" type="text" name="myNum">
+				<button id="prime-factor">Find Factors</button>
 
-	<div id="content"></div>
+				<div id="content"></div>
+			</div>
 
 
+			<div class="col-xs-6" id="factor-2">
+				<h3>Method 2</h3>
+				<p>(faster, hopefully...)</p>
+				<input id="input-num2" type="text" name="myNum">
+				<button id="prime-factor2">Find Factors</button>
+
+				<div id="content2"></div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
 	<script type="text/javascript" src="factor.js"></script>
