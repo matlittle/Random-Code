@@ -1,17 +1,24 @@
 
 $("#prime-factor").click( function() {
+
+	$("#content").empty();
+
 	var inputNum = parseInt($("#input-num").val());
 
+	if(validateInput(inputNum)){
+
+
+	var t0 = performance.now();
 	var factors = findPrimeFactors(inputNum);
+	var t1 = performance.now();
 
-	console.log("Factor Set:", factors);
-	//console.log(factors);
+	buildDisplay(factors, Math.ceil(t1 - t0));
 
-	console.log(factors.length);
-	for(var i = 0; i < factors.length; i += 1) {
-		$("#content").append("test");
+
+	}else {
+		$("#content").text("Enter a valid number, which is greater than zero")
 	}
-	
+
 });
 
 
@@ -68,5 +75,34 @@ function findPrimeFactors(number) {
 		return factors;
 	}
 
+}
+
+
+function validateInput(num) {
+	if(typeof num === 'number' && num > 0){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+function buildDisplay(set, time) {
+	var displaySet = "{";
+
+	set.forEach(function(entry) {
+		displaySet += `${entry}, `;
+	});
+
+	displaySet = displaySet.slice(0, -2) + "}"; 
+
+	if(time === 1) {
+		var displayTime = `1 millisecond`;
+	} else {
+		var displayTime = `${time} milliseconds`;
+	}
+
+	$("#content").append(displaySet).append("<br>")
+	$("#content").append(`Time to complete: ${displayTime}`);
 }
 
