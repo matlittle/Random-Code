@@ -1,19 +1,19 @@
 
 $("#prime-factor").click( function() {
 
-	$("#content").empty();
+	loadingGif();
 
 	var inputNum = parseInt($("#input-num").val());
 
+	var time0, time1;
+
 	if(validateInput(inputNum)){
 
-
-	var t0 = performance.now();
-	var factors = findPrimeFactors(inputNum);
-	var t1 = performance.now();
-
-	buildDisplay(factors, Math.ceil(t1 - t0));
-
+		setTimeout(function() {
+			var factors = findPrimeFactors(inputNum);
+			console.log(time0, time1);
+			buildDisplay(factors, Math.ceil(time1 - time0));
+		}, 1000);
 
 	}else {
 		$("#content").text("Enter a valid number, which is greater than zero")
@@ -24,10 +24,12 @@ $("#prime-factor").click( function() {
 
 function findPrimeFactors(number) {
 
+	time0 = performance.now();
 	var possPrimes = getPossiblePrimes(number);
+	var foundFactors = findFactors(possPrimes);
+	time1 = performance.now();
 
-	return findFactors(possPrimes);
-
+	return foundFactors;
 
 	// get all the possible primes that could be factors of given number
 	function getPossiblePrimes(num) {
@@ -86,8 +88,16 @@ function validateInput(num) {
 	}
 }
 
+function loadingGif() {
+	var gifUrl = "https://cdn-us-east.velaro.com/Content/Images/loading.gif"
+	var gif = $("<img>").attr("src", gifUrl);
+
+	$("#content").append(gif);
+}
 
 function buildDisplay(set, time) {
+	$("#content").empty();
+
 	var displaySet = "{";
 
 	set.forEach(function(entry) {
