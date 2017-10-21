@@ -183,11 +183,15 @@ function buildDisplay(set, time, ver) {
 
 	var displaySet = "{";
 
-	set.forEach(function(entry) {
-		displaySet += `${entry}, `;
-	});
+	if(typeof set !== undefined){
+		set.forEach(function(entry) {
+			displaySet += `${entry}, `;
+		});
 
-	displaySet = displaySet.slice(0, -2) + "}"; 
+		displaySet = displaySet.slice(0, -2); 
+	}
+
+	displaySet += "}";
 
 	if(time === 1) {
 		var displayTime = `1 millisecond`;
