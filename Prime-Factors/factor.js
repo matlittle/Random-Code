@@ -1,33 +1,38 @@
-var time0, time1, iter = 0;
+var iter = 0;
 
 $("#prime-factor").click( function() {
-	$("#content").empty();
+	$("#content-1").empty();
 
-	var inputNum = parseInt($("#input-num").val());
+	var inputNum = parseInt($("#input-num-1").val());
 
 	if(validateInput(inputNum)){
 
 		setTimeout(function() {
+			var time0 = performance.now();
 			var factors = findPrimeFactors1(inputNum);
-			buildDisplay1(factors, Math.ceil(time1 - time0));
+			var time1 = performance.now();
+			buildDisplay(factors, Math.ceil(time1 - time0), "1");
 		}, 100);
 
 	}else {
-		$("#content").text("Enter a valid number, which is greater than zero")
+		$("#content-1").text("Enter a valid number, which is greater than zero")
 	}
 });
 
 
 $("#prime-factor-2").click( function() {
-	$("#content").empty();
+	$("#content-2").empty();
 
 	var inputNum = parseInt($("#input-num-2").val());
 
 	if(validateInput(inputNum)){
 
 		setTimeout(function() {
-			var factors = findPrimeFactors1(inputNum);
-			buildDisplay1(factors, Math.ceil(time1 - time0));
+			var time0 = performance.now();
+			var factors = findPrimeFactors2(inputNum);
+			console.log(factors)
+			var time1 = performance.now();
+			buildDisplay(factors, Math.ceil(time1 - time0), "2");
 		}, 100);
 
 	}else {
@@ -38,10 +43,8 @@ $("#prime-factor-2").click( function() {
 
 function findPrimeFactors1(number) {
 
-	time0 = performance.now();
 	var possPrimes = getPossiblePrimes(number);
 	var foundFactors = findFactors(possPrimes);
-	time1 = performance.now();
 
 	return foundFactors;
 
@@ -103,44 +106,89 @@ function findPrimeFactors2(number) {
 
 	// start with input number, empty set, and beginning prime number, 2.
 	var factors = new Set();
+	var newNum = number;
 	
 	// use 2 as start of prime arr.
 	var primes = [2]; 
 
+	testPrime(primes[primes.length - 1], number);
 
-	testPrime();
+	return factors;
 
-	function testPrime() {
-		// get last number of prime array
-		var currPrime = primes[primes.length - 1];
+
+	// test if last prime in primes is a factor
+	function testPrime(prime, number) {
+
+		console.log("prime: "+prime);
+
 		// divide number to check by prime,
 		// if it's a factor
-		if(number % currPrime === 0)
+		if(number % prime === 0) {
 			// store quotient
-			var newNum = number/currPrime;
+			newNum = number/prime;
 			// check if the quotient can be divided by prime as well
-			while(newNum % currPrime === 0 && newNum > currPrime) {
+			while(newNum % prime === 0 && newNum > prime) {
 				// store new quotient if it can be, repeat
-				newNum /= currPrime;
+				newNum /= prime;
 			}
+			console.log("newNum: "+newNum);
 			
 			// add prime to the set when no longer divisible
-			factors.add(currPrime);
+			factors.add(prime);
+			console.log("factors___ ");
+			console.log(factors);
 			// if number to check is equal to prime we're checking against
-			if(newNum === currPrime){
+			if(newNum === 1){
 				// we've reached end of factoring
-				return factors;
+				return;
 			}
+		}
+
+		// if not divisible by, and larger than, current prime
+		findNextPrime(prime);
 	}
+ 
 
-	// if not divisible by prime, 
-	findNextPrime();
+	// find next prime (number not divisible by any other prime)
+	function findNextPrime(lastPrime) {
 		// looping from the last number in the prime arr + 1
-		// find next prime (number not divisible by any other prime)
+		if(lastPrime % 2 === 0) { 
+			var nextCheck = lastPrime + 1; 
+		}else {
+			// or + 2 if last prime was odd
+			var nextCheck = lastPrime + 2;
+		}
+		console.log("nextCheck: "+nextCheck);
+
+		// check if number is prime
+		do {
+			var isPrime = true;
+
+			for(var k = 0; k < primes.length; k += 1){
+				iter += 1;
+
+				if(nextCheck % primes[k] === 0) {
+					isPrime = false;
+				}
+			}
+
+			if(isPrime){
+				primes.push(nextCheck);
+				break;
+			}
+
+			nextCheck += 2;
+
+			
+
+		} while (nextCheck < 200);
+
+		console.log("primes___");
+		console.log(primes);
+
 		// restart division check 
-
-	function
-
+		testPrime(primes[primes.length - 1], newNum);
+	}
 }
 
 function validateInput(num) {
@@ -152,8 +200,8 @@ function validateInput(num) {
 }
 
 
-function buildDisplay1(set, time) {
-	$("#content").empty();
+function buildDisplay(set, time, ver) {
+	$(`#content-${ver}`).empty();
 
 	var displaySet = "{";
 
@@ -169,8 +217,8 @@ function buildDisplay1(set, time) {
 		var displayTime = `${time} milliseconds`;
 	}
 
-	$("#content").append(displaySet).append("<br>");
-	$("#content").append(`Time to complete: ${displayTime}`).append("<br>");
-	$("#content").append(`Iterations: ${iter}`);
+	$(`#content-${ver}`).append(displaySet).append("<br>");
+	$(`#content-${ver}`).append(`Time to complete: ${displayTime}`).append("<br>");
+	$(`#content-${ver}`).append(`Iterations: ${iter}`);
 }
 
