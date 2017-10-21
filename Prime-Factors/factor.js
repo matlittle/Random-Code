@@ -1,5 +1,3 @@
-var iter = 0;
-
 $("#prime-factor").click( function() {
 	$("#content-1").empty();
 
@@ -30,7 +28,6 @@ $("#prime-factor-2").click( function() {
 		setTimeout(function() {
 			var time0 = performance.now();
 			var factors = findPrimeFactors2(inputNum);
-			console.log(factors)
 			var time1 = performance.now();
 			buildDisplay(factors, Math.ceil(time1 - time0), "2");
 		}, 100);
@@ -64,7 +61,6 @@ function findPrimeFactors1(number) {
 			var isPrime = true;
 
 			for(var k = 0; k < primes.length; k += 1){
-				iter += 1;
 
 				if(primes[k] > i/2) { 
 					break; 
@@ -88,7 +84,6 @@ function findPrimeFactors1(number) {
 		var factors = new Set();
 
 		arr.forEach(function(prime) {
-			iter += 1;
 			if(number % prime === 0) {
 				factors.add(prime);
 			}
@@ -111,41 +106,36 @@ function findPrimeFactors2(number) {
 	// use 2 as start of prime arr.
 	var primes = [2]; 
 
-	testPrime(primes[primes.length - 1], number);
+	do {
+
+		var checkPrime = primes[primes.length - 1];
+
+		testPrime(checkPrime, newNum);
+
+		findNextPrime(checkPrime);
+
+	} while(newNum > 1)
+
 
 	return factors;
 
 
 	// test if last prime in primes is a factor
 	function testPrime(prime, number) {
-
-		console.log("prime: "+prime);
-
 		// divide number to check by prime,
 		// if it's a factor
 		if(number % prime === 0) {
 			// store quotient
 			newNum = number/prime;
 			// check if the quotient can be divided by prime as well
-			while(newNum % prime === 0 && newNum > prime) {
+			while(newNum % prime === 0 && newNum >= prime) {
 				// store new quotient if it can be, repeat
 				newNum /= prime;
 			}
-			console.log("newNum: "+newNum);
 			
 			// add prime to the set when no longer divisible
 			factors.add(prime);
-			console.log("factors___ ");
-			console.log(factors);
-			// if number to check is equal to prime we're checking against
-			if(newNum === 1){
-				// we've reached end of factoring
-				return;
-			}
 		}
-
-		// if not divisible by, and larger than, current prime
-		findNextPrime(prime);
 	}
  
 
@@ -158,15 +148,12 @@ function findPrimeFactors2(number) {
 			// or + 2 if last prime was odd
 			var nextCheck = lastPrime + 2;
 		}
-		console.log("nextCheck: "+nextCheck);
 
 		// check if number is prime
-		do {
+		while (true) {
 			var isPrime = true;
 
 			for(var k = 0; k < primes.length; k += 1){
-				iter += 1;
-
 				if(nextCheck % primes[k] === 0) {
 					isPrime = false;
 				}
@@ -178,16 +165,7 @@ function findPrimeFactors2(number) {
 			}
 
 			nextCheck += 2;
-
-			
-
-		} while (nextCheck < 200);
-
-		console.log("primes___");
-		console.log(primes);
-
-		// restart division check 
-		testPrime(primes[primes.length - 1], newNum);
+		}
 	}
 }
 
@@ -218,7 +196,6 @@ function buildDisplay(set, time, ver) {
 	}
 
 	$(`#content-${ver}`).append(displaySet).append("<br>");
-	$(`#content-${ver}`).append(`Time to complete: ${displayTime}`).append("<br>");
-	$(`#content-${ver}`).append(`Iterations: ${iter}`);
+	$(`#content-${ver}`).append(`Time to complete: ${displayTime}`);
 }
 
