@@ -41,6 +41,11 @@ $("#prime-factor-2").click( function() {
 function findPrimeFactors1(number) {
 
 	var possPrimes = getPossiblePrimes(number);
+
+	if(!possPrimes){
+		return null;
+	}
+
 	var foundFactors = findFactors(possPrimes);
 
 	return foundFactors;
@@ -106,15 +111,15 @@ function findPrimeFactors2(number) {
 	// use 2 as start of prime arr.
 	var primes = [2]; 
 
-	do {
+	testPrime(primes[primes.length - 1], newNum);
 
-		var checkPrime = primes[primes.length - 1];
+	while(newNum > 1) {
 
-		testPrime(checkPrime, newNum);
+		var newPrime = findNextPrime(primes[primes.length - 1]);
 
-		findNextPrime(checkPrime);
+		testPrime(newPrime, newNum);
 
-	} while(newNum > 1)
+	} 
 
 
 	return factors;
@@ -122,12 +127,11 @@ function findPrimeFactors2(number) {
 
 	// test if last prime in primes is a factor
 	function testPrime(prime, number) {
-		// divide number to check by prime,
-		// if it's a factor
+		// divide number to check by given prime
 		if(number % prime === 0) {
-			// store quotient
+			// if it's a factor store quotient
 			newNum = number/prime;
-			// check if the quotient can be divided by prime as well
+			// check if the quotient can be divided again
 			while(newNum % prime === 0 && newNum >= prime) {
 				// store new quotient if it can be, repeat
 				newNum /= prime;
@@ -141,8 +145,8 @@ function findPrimeFactors2(number) {
 
 	// find next prime (number not divisible by any other prime)
 	function findNextPrime(lastPrime) {
-		// looping from the last number in the prime arr + 1
-		if(lastPrime % 2 === 0) { 
+		// increment last prime by 1 if it was 2,
+		if(lastPrime === 2) { 
 			var nextCheck = lastPrime + 1; 
 		}else {
 			// or + 2 if last prime was odd
@@ -166,6 +170,8 @@ function findPrimeFactors2(number) {
 
 			nextCheck += 2;
 		}
+
+		return nextCheck;
 	}
 }
 
@@ -183,7 +189,7 @@ function buildDisplay(set, time, ver) {
 
 	var displaySet = "{";
 
-	if(typeof set !== undefined){
+	if(set !== null) {
 		set.forEach(function(entry) {
 			displaySet += `${entry}, `;
 		});
