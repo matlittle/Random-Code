@@ -10,7 +10,7 @@ $("#prime-factor").click( function() {
 
 		worker.onmessage = function(event) {
 			var time1 = performance.now();
-			buildDisplay(event.data, Math.ceil(time1 - time0), "1")
+			buildDisplay(event.data, Math.ceil(time1 - time0), "1");
 		}
 
 		var time0 = performance.now();

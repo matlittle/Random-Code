@@ -3,6 +3,7 @@
 onmessage = function(event) {
 	var factors = findPrimeFactors2(event.data);
 	postMessage(factors);
+	close();
 }
 
 function findPrimeFactors2(number) {
