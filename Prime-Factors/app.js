@@ -30,12 +30,18 @@ $("#prime-factor-2").click( function() {
 	if(validateInput(inputNum)){
 
 		var time0 = performance.now();
+		var time1 = performance.now();
 
 		var defObj = $.Deferred();
 
-		defObj.done(buildDisplay);
+		defObj.done(function(e) {
+			console.log(e);
+		});
 
-		console.log(defObj);
+		defObj.promise(findPrimeFactors2);
+
+		defObj.resolve(inputNum);
+
 
 		/*var factors = findPrimeFactors2(inputNum);
 		var time1 = performance.now();
@@ -59,15 +65,17 @@ function validateInput(num) {
 function buildDisplay(set, time, ver) {
 	$(`#content-${ver}`).empty();
 
+	console.log(set);
+
 	var displaySet = "{";
 
-	if(set !== null) {
+	/*if(set !== null) {
 		set.forEach(function(entry) {
 			displaySet += `${entry}, `;
 		});
 
 		displaySet = displaySet.slice(0, -2); 
-	}
+	}*/
 
 	displaySet += "}";
 
