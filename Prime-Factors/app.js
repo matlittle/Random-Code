@@ -94,28 +94,61 @@ function findPrimeFactors2(number) {
 
 	var defObj = new $.Deferred();
 
-
-
 	// start with input number, empty set, and beginning prime number, 2.
 	var factors = new Set();
 	var newNum = number;
 	// use 2 as start of prime arr.
 	var primes = [2]; 
 
+
 	setTimeout(function() {
 
-		if(number === 1) {
+		if(newNum === 1) {
 			return null;
 		}
 
-		testPrime(primes[primes.length - 1], newNum);
-
 		while(newNum > 1) {
+			// get last prime from array
+			var prime = primes[primes.length - 1];
 
-			var newPrime = findNextPrime(primes[primes.length - 1]);
+			console.log(`newNum: ${newNum}  prime: ${prime}`);
 
-			testPrime(newPrime, newNum);
 
+			// divide number to check by prime
+			if(newNum % prime === 0) {
+				// if it's a factor store quotient
+				newNum /= prime;
+				// check if the quotient can be divided again
+				while(newNum % prime === 0) {
+					// store new quotient if it can be, repeat
+					newNum /= prime;
+				}
+				// add prime to the set when no longer divisible
+				factors.add(prime);
+			}
+
+
+			// increment last prime by 1 if it was 2
+			if(prime === 2) { 
+				var nextCheck = prime + 1; 
+			}else {
+				// or + 2 if last prime was odd
+				var nextCheck = prime + 2;
+			}
+			// check if number is prime
+			do {
+				var isPrime = true;
+				for(var k = 0; k < primes.length; k += 1){
+					if(nextCheck % primes[k] === 0) {
+						isPrime = false;
+						break;
+					}
+				}
+				if(isPrime){
+					primes.push(nextCheck);
+				}
+				nextCheck += 2;
+			} while(!isPrime)
 		} 
 
 		defObj.resolve(factors);
@@ -125,6 +158,7 @@ function findPrimeFactors2(number) {
 	
 	return defObj.promise();
 
+	/*
 
 	// test if last prime in primes arr is a factor
 	function testPrime(prime, number) {
@@ -142,7 +176,7 @@ function findPrimeFactors2(number) {
 			factors.add(prime);
 		}
 	}
- 
+
 
 	// find next prime (number not divisible by any other prime)
 	function findNextPrime(lastPrime) {
@@ -175,4 +209,6 @@ function findPrimeFactors2(number) {
 
 		return nextCheck;
 	}
+
+	*/
 }
