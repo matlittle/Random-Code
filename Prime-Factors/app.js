@@ -30,19 +30,15 @@ $("#prime-factor-2").click( function() {
 	if(validateInput(inputNum)){
 
 		var time0 = performance.now();
+		
+		var promise = findPrimeFactors2(inputNum)
 
-		$(function() {
-
-			var promise = findPrimeFactors2(inputNum);
-
-			promise.done(function(response) {
+		promise.done( 
+			function(response) {
 				var time1 = performance.now();
-				buildDisplay(response, Math.ceil(time1 - time0), "2")
-			});
-
-			console.log(promise);
-
-		});
+				buildDisplay(response, Math.ceil(time1 - time0), "2");
+			}
+		);
 
 		/*var factors = findPrimeFactors2(inputNum);
 		var time1 = performance.now();
@@ -66,25 +62,13 @@ function validateInput(num) {
 function buildDisplay(set, time, ver) {
 	$(`#content-${ver}`).empty();
 
-	var displaySet = "{";
-
-	if(set !== null) {
-		set.forEach(function(entry) {
-			displaySet += `${entry}, `;
-		});
-
-		displaySet = displaySet.slice(0, -2); 
-	}
-
-	displaySet += "}";
-
 	if(time === 1) {
 		var displayTime = `1 millisecond`;
 	} else {
 		var displayTime = `${time} milliseconds`;
 	}
 
-	$(`#content-${ver}`).append(displaySet).append("<br>");
+	$(`#content-${ver}`).append(set).append("<br>");
 	$(`#content-${ver}`).append(`Time to complete: ${displayTime}`);
 }
 
@@ -92,27 +76,40 @@ function buildDisplay(set, time, ver) {
 
 function findPrimeFactors2(number) {
 
-	var defObj = new $.Deferred();
-
-	// start with input number, empty set, and beginning prime number, 2.
-	var factors = new Set();
-	var newNum = number;
-	// use 2 as start of prime arr.
-	var primes = [2]; 
+	var dfd = new $.Deferred();
 
 
 	setTimeout(function() {
 
-		if(newNum === 1) {
-			return null;
+		// start with input number, empty set, and beginning prime number, 2.
+		var factors = {
+			values: "{}",
+			add: function(value){
+				var vals = this.values;
+
+				if(vals.indexOf(String(value)) === -1) {
+					if(vals.length === 2) {
+						this.values = `{${value}}`;
+					} else {
+						this.values = `${vals.substring(0, vals.length-1)}, ${value}}`;
+					}
+				}
+			}
 		}
 
-		while(newNum > 1) {
+		var newNum = number;
+		// use 2 as start of prime arr.
+		var primes = [2]; 
+
+		if(newNum === 1) {
+			dfd.resolve(factors.values);
+		}
+
+		checkPrime();
+
+		function checkPrime() {
 			// get last prime from array
 			var prime = primes[primes.length - 1];
-
-			console.log(`newNum: ${newNum}  prime: ${prime}`);
-
 
 			// divide number to check by prime
 			if(newNum % prime === 0) {
@@ -127,36 +124,42 @@ function findPrimeFactors2(number) {
 				factors.add(prime);
 			}
 
-
-			// increment last prime by 1 if it was 2
-			if(prime === 2) { 
-				var nextCheck = prime + 1; 
+			if(newNum === 1) {
+				dfd.resolve(factors.values);
 			}else {
-				// or + 2 if last prime was odd
-				var nextCheck = prime + 2;
-			}
-			// check if number is prime
-			do {
-				var isPrime = true;
-				for(var k = 0; k < primes.length; k += 1){
-					if(nextCheck % primes[k] === 0) {
-						isPrime = false;
-						break;
+
+				// increment last prime by 1 if it was 2
+				if(prime === 2) { 
+					var nextCheck = prime + 1; 
+				}else {
+					// or + 2 if last prime was odd
+					var nextCheck = prime + 2;
+				}
+				// check if number is prime
+				do {
+					var isPrime = true;
+					for(var k = 0; k < primes.length; k += 1){
+						if(nextCheck % primes[k] === 0) {
+							isPrime = false;
+							break;
+						}
 					}
-				}
-				if(isPrime){
-					primes.push(nextCheck);
-				}
-				nextCheck += 2;
-			} while(!isPrime)
-		} 
+					if(isPrime){
+						primes.push(nextCheck);
+					}
+					nextCheck += 2;
+				} while(!isPrime)
 
-		defObj.resolve(factors);
+				setTimeout(function() {
+					checkPrime();
+				}, 0);
+			}
+		}
 
-	}, 1000);
+	}, 1);
 
 	
-	return defObj.promise();
+	return dfd.promise();
 
 	/*
 
