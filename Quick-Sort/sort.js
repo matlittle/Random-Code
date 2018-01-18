@@ -1,16 +1,16 @@
-var counter = 0;
+var qCounter = 0;
+var bCounter = 0;
 
 function quickSort(arr, pvt = true) {
 
-    counter++;
-    console.log("counter: ", counter)
-
     if (arr.length > 1) {
         const mid = (pvt ? arr[0] : arr[arr.length - 1]);
-        var lowArr = [];
-        var highArr =[];
+        let lowArr = [];
+        let highArr =[];
 
         for(let i = 0; i < arr.length; i++) {
+            qCounter++;
+
             if(arr[i] <= mid) {
                 lowArr.push( arr[i] );
             } else {
@@ -25,7 +25,43 @@ function quickSort(arr, pvt = true) {
     }
 }
 
+function bubbleSort(arr) {
+    let sorted = false;
 
-const testArr = [3,7,2,4,5,9,0,1,8]
-console.log(testArr);
-console.log( quickSort(testArr) );
+    while(!sorted) {
+        sorted = true;
+
+        for(let i = 0; i < arr.length - 1; i++) {
+            bCounter++;
+
+            if(arr[i] > arr[i+1]) {
+                let temp = arr[i];
+                arr[i] = arr[i+1];
+                arr[i+1] = temp;
+                sorted = false;
+            }
+        }
+    }
+
+    return arr;
+}
+
+function buildRandArr(len) {
+    let tempArr = [];
+
+    for(let i = 0; i < len; i++) {
+        tempArr.push( Math.floor( Math.random() * 1000 ) + 1 );
+    }
+
+    return tempArr;
+}
+
+
+const testArr = buildRandArr(20);
+
+quickSort(testArr);
+console.log("Quick counter: ", qCounter);
+
+
+bubbleSort(testArr)
+console.log("Bubble counter: ", bCounter);
