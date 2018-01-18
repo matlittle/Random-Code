@@ -1,8 +1,12 @@
+var counter = 0;
 
-function quickSort(arr) {
+function quickSort(arr, pvt = true) {
+
+    counter++;
+    console.log("counter: ", counter)
 
     if (arr.length > 1) {
-        const mid = Math.floor(arr.length-1 / 2);
+        const mid = (pvt ? arr[0] : arr[arr.length - 1]);
         var lowArr = [];
         var highArr =[];
 
@@ -14,10 +18,7 @@ function quickSort(arr) {
             }
         }
 
-        console.log("lowArr: ", lowArr);
-        console.log("highArr: ", highArr);
-
-        return ( quickSort( lowArr ).concat( quickSort( highArr ) ) );
+        return ( quickSort( lowArr, !pvt ).concat( quickSort( highArr, !pvt ) ) );
         
     } else {
         return arr;
