@@ -28,10 +28,10 @@ function quickSort(arr, low, high) {
 		}
 	}
 
-	console.log(`arr: , ${arr}`);
-	console.log(`low: , ${low}`);
-	console.log(`pivotIndex: , ${pivotIndex}`);
-	console.log(`high: , ${high}`);
+	console.log(`arr:  ${arr}`);
+	console.log(`low:  ${low}`);
+	console.log(`pivotIndex:  ${pivotIndex}`);
+	console.log(`high:  ${high}`);
 
 
 	quickSort(arr, low, pivotIndex-1);
