@@ -1,5 +1,4 @@
 var qCounter = 0;
-var bCounter = 0;
 
 function quickSort(arr, low = 0, high = false) {
   if (!high) {
@@ -43,28 +42,6 @@ function swap(arr, lowIndex, highIndex) {
 }
 
 
-function bubbleSort(arr) {
-  let sorted = false;
-
-  while (!sorted) {
-    sorted = true;
-
-    for (let i = 0; i < arr.length - 1; i++) {
-      bCounter++;
-
-      if (arr[i] > arr[i + 1]) {
-        let temp = arr[i];
-        arr[i] = arr[i + 1];
-        arr[i + 1] = temp;
-        sorted = false;
-      }
-    }
-  }
-
-  return arr;
-}
-
-
 function buildRandArr(len, l = 0, h = 99) {
   let tempArr = [];
 
@@ -82,8 +59,6 @@ function buildRandArr(len, l = 0, h = 99) {
 
 
 const qArr = buildRandArr(100, 0, 1000);
-const bArr = [];
-qArr.forEach(el => { bArr.push(el); } );
 
 console.log(`Test array:  ${qArr}\n`);
 
@@ -91,7 +66,4 @@ quickSort(qArr);
 console.log("Quick counter: ", qCounter);
 console.log(`Sorted: ${qArr}\n`);
 
-bubbleSort(bArr);
-console.log("Bubble counter: ", bCounter);
-console.log(`Sorted: ${bArr}\n`);
 
