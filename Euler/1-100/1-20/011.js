@@ -28,7 +28,7 @@ The product of these numbers is 26 × 63 × 78 × 14 = 1788696.
 What is the greatest product of four adjacent numbers in the same
 direction (up, down, left, right, or diagonally) in the 20×20 grid?
 */
-var grid = [
+const grid = [
     [8, 2, 22, 97, 38, 15, 0, 40, 0, 75, 4, 5, 7, 78, 52, 12, 50, 77, 91, 8],
     [49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 4, 56, 62, 0],
     [81, 49, 31, 73, 55, 79, 14, 29, 93, 71, 40, 67, 53, 88, 30, 3, 49, 13, 36, 65],
@@ -50,7 +50,6 @@ var grid = [
     [20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54],
     [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48]
 ];
-;
 function checkType(grid, x, y, type) {
     switch (type) {
         case 'vertical':
@@ -88,41 +87,35 @@ function getNextFour(grid, x, y, type) {
     }
 }
 function getProduct(arr) {
-    var product = 1;
-    arr.forEach(function (num) { return product *= num; });
+    let product = 1;
+    arr.forEach((num) => product *= num);
     return product;
 }
 function getHighestProduct(grid) {
-    var types = ['horizontal', 'vertical', 'upDiagonal', 'downDiagonal'];
-    var returnObj = {
+    const types = ['horizontal', 'vertical', 'upDiagonal', 'downDiagonal'];
+    let returnObj = {
         highest: 0,
         x: 0,
         y: 0,
         type: "",
         numbers: []
     };
-    var _loop_1 = function (x) {
-        var _loop_2 = function (y) {
-            types.forEach(function (type) {
+    for (let x = 0; x < grid.length; x++) {
+        for (let y = 0; y < grid[x].length; y++) {
+            types.forEach((type) => {
                 if (checkType(grid, x, y, type)) {
-                    var nextFour = getNextFour(grid, x, y, type);
-                    var product = getProduct(nextFour);
-                    var sum = nextFour[0] + nextFour[1] + nextFour[2] + nextFour[3];
+                    let nextFour = getNextFour(grid, x, y, type);
+                    let product = getProduct(nextFour);
+                    let sum = nextFour[0] + nextFour[1] + nextFour[2] + nextFour[3];
                     if (product > 30000000) {
-                        console.log("product: " + product + "  numbers: " + nextFour + "  sum: " + sum);
+                        console.log(`product: ${product}  numbers: ${nextFour}  sum: ${sum}`);
                     }
                     if (product > returnObj.highest) {
                         returnObj = { highest: product, x: x, y: y, type: type, numbers: nextFour };
                     }
                 }
             });
-        };
-        for (var y = 0; y < grid[x].length; y++) {
-            _loop_2(y);
         }
-    };
-    for (var x = 0; x < grid.length; x++) {
-        _loop_1(x);
     }
     return returnObj;
 }

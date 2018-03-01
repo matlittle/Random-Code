@@ -13,8 +13,7 @@
 
   Which starting number, under one million, produces the longest chain?
 */
-function collatz(num, chain) {
-    if (chain === void 0) { chain = 0; }
+function collatz(num, chain = 0) {
     if (num === 1)
         return chain;
     if (num % 2 === 0) {
@@ -25,14 +24,14 @@ function collatz(num, chain) {
     }
 }
 function findLongestCollatzChain(max) {
-    var highest = 0;
-    for (var i = 1; i < max; i++) {
-        var chain = collatz(i);
+    let highest = 0;
+    for (let i = 1; i < max; i++) {
+        let chain = collatz(i);
         if (i % 50000 === 0)
-            console.log("Index: " + i + "  Chain: " + chain);
+            console.log(`Index: ${i}  Chain: ${chain}`);
         if (chain > highest) {
             highest = chain;
-            console.log("New Highest: " + i);
+            console.log(`New Highest: ${i}`);
         }
     }
     return highest;

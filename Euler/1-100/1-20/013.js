@@ -1,4 +1,4 @@
-var numbers = [
+const numbers = [
     "37107287533902102798797998220837590246510135740250",
     "46376937677490009712648124896970078050417018260538",
     "74324986199524741059474233309513058123726617309629",
@@ -101,13 +101,13 @@ var numbers = [
     "53503534226472524250874054075591789781264330331690"
 ];
 function firstTenDigits(arr) {
-    var sum = getStringSum(arr);
+    const sum = getStringSum(arr);
     console.log("Total sum: ", sum);
     return sum.substr(0, 10);
 }
 function getStringSum(arr) {
-    var sum = "";
-    arr.forEach(function (str) {
+    let sum = "";
+    arr.forEach((str) => {
         sum = addStrings(sum, str);
     });
     return sum;
@@ -116,16 +116,16 @@ function addStrings(str1, str2) {
     console.log("string 1: length: ", str1.length, "  string: ", str1);
     console.log("string 2: length: ", str2.length, "  string: ", str2);
     console.log("==================================================");
-    var newStr = "";
-    var carryOver = 0;
-    var currentDigit = 0;
-    var shortStr = str1.length <= str2.length ? str1 : str2;
-    var longStr = str1.length > str2.length ? str1 : str2;
-    for (var i = 0; i < longStr.length; i++) {
-        var shortI = shortStr.length - 1 - i;
-        var longI = longStr.length - 1 - i;
+    let newStr = "";
+    let carryOver = 0;
+    let currentDigit = 0;
+    const shortStr = str1.length <= str2.length ? str1 : str2;
+    const longStr = str1.length > str2.length ? str1 : str2;
+    for (let i = 0; i < longStr.length; i++) {
+        let shortI = shortStr.length - 1 - i;
+        let longI = longStr.length - 1 - i;
         if (shortI >= 0) {
-            var sumStr = (parseInt(shortStr[shortI]) + parseInt(longStr[longI]) + carryOver).toString();
+            let sumStr = (parseInt(shortStr[shortI]) + parseInt(longStr[longI]) + carryOver).toString();
             if (sumStr.length > 1) {
                 carryOver = parseInt(sumStr[0]);
                 currentDigit = parseInt(sumStr[1]);
@@ -134,14 +134,14 @@ function addStrings(str1, str2) {
                 carryOver = 0;
                 currentDigit = parseInt(sumStr[0]);
             }
-            newStr = "" + currentDigit + newStr;
+            newStr = `${currentDigit}${newStr}`;
         }
         else {
             if (carryOver === 0) {
-                newStr = "" + longStr[longI] + newStr;
+                newStr = `${longStr[longI]}${newStr}`;
             }
             else {
-                var sumStr = (parseInt(longStr[longI]) + carryOver).toString();
+                let sumStr = (parseInt(longStr[longI]) + carryOver).toString();
                 if (sumStr.length > 1) {
                     carryOver = parseInt(sumStr[0]);
                     currentDigit = parseInt(sumStr[1]);
@@ -150,12 +150,12 @@ function addStrings(str1, str2) {
                     carryOver = 0;
                     currentDigit = parseInt(sumStr[0]);
                 }
-                newStr = "" + currentDigit + newStr;
+                newStr = `${currentDigit}${newStr}`;
             }
         }
     }
     if (carryOver > 0) {
-        newStr = "" + carryOver.toString() + newStr;
+        newStr = `${carryOver.toString()}${newStr}`;
     }
     return newStr;
 }
