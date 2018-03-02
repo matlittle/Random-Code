@@ -25,7 +25,7 @@ function collatz(num: number, chain: number = 0): number {
   }
 }
 
-function findLongestCollatzChain(max) {
+function findLongestCollatzChain(max): number {
   let highest: number = 0;
   for( let i: number = 1; i < max; i++ ) {
     let chain = collatz(i);
