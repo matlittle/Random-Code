@@ -4,6 +4,7 @@
 
   How many such routes are there through a 20×20 grid?
 */
+const saved = {};
 function getNumberOfPaths(gridSize) {
     const x = 0;
     const y = 0;
@@ -11,14 +12,17 @@ function getNumberOfPaths(gridSize) {
     return paths;
 }
 function checkNextPoint(x, y, end) {
-    if (x === end && y === end) {
+    //console.log(`x: ${x}  y: ${y}`);
+    if ((x === end && y === end) || x + 1 > end || y + 1 > end) {
         return 1;
     }
-    else if (x > end || y > end) {
-        return 0;
+    else if (saved[`${x}_${y}`]) {
+        return saved[`${x}_${y}`];
     }
     else {
-        return checkNextPoint(x + 1, y, end) + checkNextPoint(x, y + 1, end);
+        saved[`${x}_${y}`] = checkNextPoint(x + 1, y, end) + checkNextPoint(x, y + 1, end);
+        return saved[`${x}_${y}`];
     }
 }
 console.log(getNumberOfPaths(20));
+console.log(saved);
