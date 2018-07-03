@@ -31,5 +31,8 @@ function checkNextPoint(x: number, y: number, end: number): number {
 }
 
 
-console.log( getNumberOfPaths(20) );
+console.log( getNumberOfPaths(5) );
 console.log( saved );
+
+
+

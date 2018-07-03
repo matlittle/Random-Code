@@ -5,11 +5,17 @@ What is the sum of the digits of the number 21000?
 */
 
 
-function stringMultiplication(str1: string, str2: string): string {
+function twoToGivenPower(power: number): string {
+  if (power === 0) return '1'; 
+  if (power === 1) return '2';
 
+  let newStr: string = '2';
 
+  for (let i: number = 2; i <= power; i++) {
+    newStr = stringAddition(newStr, newStr);
+  }
 
-  return "";
+  return newStr;
 }
 
 
@@ -41,6 +47,20 @@ function stringAddition(str1: string, str2: string): string {
   return newString;
 }
 
+function getSumOfNumbersInString(str: string): number {
+  let sum: number = 0;
 
-console.log( mathPowerToString(2, 100) );
+  for (let i: number = 0; i < str.length; i++) {
+    sum += parseInt(str[i]);
+  }
+
+  return sum;
+}
+
+const twoTo1000: string = twoToGivenPower(1000);
+
+console.log( twoTo1000 );
+console.log( "===================" );
+console.log( getSumOfNumbersInString(twoTo1000) );
+
 

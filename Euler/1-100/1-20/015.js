@@ -24,5 +24,5 @@ function checkNextPoint(x, y, end) {
         return saved[`${x}_${y}`];
     }
 }
-console.log(getNumberOfPaths(20));
+console.log(getNumberOfPaths(5));
 console.log(saved);

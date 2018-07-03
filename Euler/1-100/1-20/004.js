@@ -33,5 +33,3 @@ function isPalindrome(num) {
 }
 
 console.log( largestPalindrome(999, 999) );
-
-
